@@ -33,6 +33,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.springframework.security:spring-security-oauth2-jose:6.4.2")
+    implementation("org.springframework.security:spring-security-oauth2-resource-server:6.4.2")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")

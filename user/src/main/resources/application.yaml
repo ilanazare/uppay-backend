@@ -5,6 +5,12 @@ spring:
     url: jdbc:mysql://localhost:3306/uppay
     username: uppay
     password: uppay
+  jwt:
+    secret: your-256-bit-secret-key-must-be-at-least-32-characters-long
+    expiration: 86400
+  logging:
+    level:
+      org.springframework.core.env: TRACE
   jpa:
     hibernate:
       ddl-auto: update

@@ -1,62 +1,65 @@
 package com.utils
 
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.security.Keys
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.oauth2.jwt.Jwt
+import org.springframework.security.oauth2.jwt.JwtClaimsSet
+import org.springframework.security.oauth2.jwt.JwtDecoder
+import org.springframework.security.oauth2.jwt.JwtEncoder
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters
+import org.springframework.security.oauth2.jwt.JwtException
 import org.springframework.stereotype.Component
-import java.util.Date
-import javax.crypto.SecretKey
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.util.stream.Collectors
 
 @Component
 class JwtTokenUtil(
-    @Value("\${jwt.secret}") private val secret: String,
-    @Value("\${jwt.expiration}") private val expiration: Long,
+    @Autowired
+    private val jwtEncoder: JwtEncoder,
+    @Autowired
+    private val jwtDecoder: JwtDecoder,
 ) {
-    private val key: SecretKey = Keys.hmacShaKeyFor(secret.toByteArray())
-
-    fun generateToken(userDetails: UserDetails): String {
-        val claims =
-            mutableMapOf<String, Any>(
-                "authorities" to userDetails.authorities.joinToString(",") { it.authority },
-            )
-
-        return Jwts
-            .builder()
-            .claims(claims)
-            .subject(userDetails.username)
-            .issuedAt(Date())
-            .expiration(Date(System.currentTimeMillis() + expiration * 1000))
-            .signWith(key, Jwts.SIG.HS256)
-            .compact()
+    fun generateJwt(auth: Authentication): String {
+        val now = Instant.now()
+        val scope: String =
+            auth.authorities
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(" "))
+        val claims: JwtClaimsSet =
+            JwtClaimsSet
+                .builder()
+                .issuer("self")
+                .issuedAt(now)
+                .expiresAt(now.plus(24, ChronoUnit.HOURS))
+                .subject(auth.name)
+                .claim("roles", scope)
+                .build()
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).tokenValue
     }
+
+    fun getUsernameFromToken(token: String): String =
+        try {
+            val jwt: Jwt = jwtDecoder.decode(token)
+            jwt.subject ?: throw JwtException("Token doesn't contain a subject")
+        } catch (ex: JwtException) {
+            throw JwtException("Failed to extract username from token: ${ex.message}")
+        }
 
     fun validateToken(
         token: String,
         userDetails: UserDetails,
-    ): Boolean {
-        val username = getUsernameFromToken(token)
-        return username == userDetails.username && !isTokenExpired(token)
-    }
+    ): Boolean =
+        try {
+            val jwt = jwtDecoder.decode(token)
+            val username = jwt.subject
+            !isTokenExpired(jwt) && username == userDetails.username
+        } catch (ex: JwtException) {
+            false
+        }
 
-    fun getUsernameFromToken(token: String): String =
-        Jwts
-            .parser()
-            .verifyWith(key)
-            .build()
-            .parseSignedClaims(token)
-            .payload
-            .subject
-
-    private fun isTokenExpired(token: String): Boolean {
-        val expirationDate =
-            Jwts
-                .parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .payload
-                .expiration
-        return expirationDate.before(Date())
-    }
+    private fun isTokenExpired(jwt: Jwt): Boolean = jwt.expiresAt?.isBefore(Instant.now()) ?: true
 }
