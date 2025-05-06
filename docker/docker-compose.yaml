@@ -1,0 +1,23 @@
+services:
+  datasource:
+    image: mysql:8.3-oraclelinux8
+    container_name: datasource
+    restart: always
+    environment:
+      MYSQL_USER: 'uppay'
+      MYSQL_DATABASE: 'uppay'
+      MYSQL_PASSWORD: 'uppay'
+      MYSQL_ROOT_PASSWORD: 'uppay'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql-fee
+    networks:
+      - network_fee
+networks:
+  network_fee:
+    driver: bridge
+volumes:
+  my-db:
