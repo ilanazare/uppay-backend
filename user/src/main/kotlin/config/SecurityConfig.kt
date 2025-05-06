@@ -48,6 +48,8 @@ class SecurityConfig(
                 it
                     .requestMatchers("/api/auth/login")
                     .permitAll()
+                    .requestMatchers("/api/user/register")
+                    .permitAll()
                     .anyRequest()
                     .authenticated()
             }.sessionManagement {
