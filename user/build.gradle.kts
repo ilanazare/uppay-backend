@@ -40,6 +40,10 @@ dependencies {
     implementation("io.github.openfeign.form:feign-form-spring:3.8.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
+    implementation("org.springframework.amqp:spring-rabbit-stream")
+
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.projectlombok:lombok")
@@ -50,6 +54,9 @@ dependencies {
     testImplementation("io.mockk:mockk:1.14.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.security:spring-security-test")
+
+    testImplementation("org.springframework.amqp:spring-rabbit-test")
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
