@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: up-pay
+data:
+  mysql-root-password: "root"
+  mysql-user: "up-pay"
+  mysql-password: "up-pay"
+  mysql-database: "up-pay"
+  init-script: |
+    #!/bin/bash
+    for i in {1..30}; do
+      mysqladmin ping -uroot -proot && break || sleep 1
+    done
+    mysql -uroot -proot -e "CREATE USER IF NOT EXISTS 'up-pay'@'%' IDENTIFIED BY 'up-pay'; CREATE DATABASE IF NOT EXISTS up-pay; GRANT ALL PRIVILEGES ON up-pay.* TO 'up-pay'@'%'; FLUSH PRIVILEGES;"

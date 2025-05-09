@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rabbitmq
-  namespace: rabbit
+  name: rabbitmq-deployment
+  namespace: up-pay
 spec:
   replicas: 1
   selector:
