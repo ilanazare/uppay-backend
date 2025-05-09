@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-deployment
-  namespace: up-pay
+  namespace: uppay
 spec:
   replicas: 1
   selector:
@@ -13,59 +13,30 @@ spec:
       labels:
         app: mysql
     spec:
-      terminationGracePeriodSeconds: 60
-      securityContext:
-        fsGroup: 999
-      initContainers:
-        - name: init-mysql
-          image: mysql:8.3-oraclelinux8
-          command: ['sh', '-c', 'if [ ! -d /var/lib/mysql/mysql ]; then mysqld --initialize-insecure --user=mysql; fi && chown -R mysql:mysql /var/lib/mysql && chmod 750 /var/lib/mysql']
-          volumeMounts:
-            - name: mysql-persistent-storage
-              mountPath: /var/lib/mysql
       containers:
         - name: mysql
-          image: mysql:8.3-oraclelinux8
-          command: ["sh", "-c", "exec docker-entrypoint.sh mysqld"]
+          image: mysql:8.0
           env:
             - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: mysql-root-password
-            - name: MYSQL_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: mysql-user
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: mysql-password
+              value: rootpassword
             - name: MYSQL_DATABASE
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: mysql-database
+              value: uppay
+            - name: MYSQL_USER
+              value: uppay
+            - name: MYSQL_PASSWORD
+              value: uppay@0132
           ports:
             - containerPort: 3306
-          livenessProbe:
-            exec:
-              command: ["mysqladmin", "ping", "-uroot", "-proot"]
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-          readinessProbe:
-            exec:
-              command: ["mysqladmin", "ping", "-uroot", "-proot"]
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 1
           volumeMounts:
-            - name: mysql-persistent-storage
+            - name: mysql-data
               mountPath: /var/lib/mysql
+            - name: mysql-config
+              mountPath: /etc/mysql/conf.d/my.cnf
+              subPath: my.cnf
       volumes:
-        - name: mysql-persistent-storage
+        - name: mysql-data
           persistentVolumeClaim:
-            claimName: mysql-pv-claim
+            claimName: mysql-pvc
+        - name: mysql-config
+          configMap:
+            name: mysql-config

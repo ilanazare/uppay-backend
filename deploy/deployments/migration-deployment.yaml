@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: migration-deployment
+  namespace: uppay
+  labels:
+    app: migration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: migration
+  template:
+    metadata:
+      labels:
+        app: migration
+    spec:
+      containers:
+        - name: migration-app
+          image: ivanazare/migration:latest
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: migration-config
+      restartPolicy: Always
