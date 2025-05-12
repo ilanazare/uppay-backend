@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rabbitmq-deployment
-  namespace: up-pay
+  namespace: uppay
 spec:
   replicas: 1
   selector:

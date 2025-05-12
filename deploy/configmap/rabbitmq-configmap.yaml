@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: rabbitmq-config
-  namespace: up-pay
+  namespace: uppay
 data:
   RABBITMQ_DEFAULT_USER: "uppay"
   RABBITMQ_DEFAULT_PASS: "uppay@0132"

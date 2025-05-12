@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: rabbitmq-pv-claim
-  namespace: up-pay
+  namespace: uppay
 spec:
   accessModes:
     - ReadWriteOnce
