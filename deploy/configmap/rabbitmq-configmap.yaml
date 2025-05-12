@@ -4,5 +4,5 @@ metadata:
   name: rabbitmq-config
   namespace: up-pay
 data:
-  RABBITMQ_DEFAULT_USER: "up-pay"
-  RABBITMQ_DEFAULT_PASS: "up-pay"
+  RABBITMQ_DEFAULT_USER: "uppay"
+  RABBITMQ_DEFAULT_PASS: "uppay@0132"

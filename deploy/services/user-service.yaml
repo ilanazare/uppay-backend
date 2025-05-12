@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: migration-service
+  name: user-service
   namespace: uppay
 spec:
   selector:
-    app: migration
+    app: user
   ports:
     - protocol: TCP
-      port: 5000
-      targetPort: 5000
+      port: 8080
+      targetPort: 8080
   type: ClusterIP
