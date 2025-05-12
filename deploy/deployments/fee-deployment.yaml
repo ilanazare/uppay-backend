@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fee-deployment
+  namespace: uppay
+  labels:
+    app: fee
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fee
+  template:
+    metadata:
+      labels:
+        app: fee
+    spec:
+      containers:
+        - name: fee-app
+          image: ivanazare/fee:latest
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: fee-config
+      restartPolicy: Always
