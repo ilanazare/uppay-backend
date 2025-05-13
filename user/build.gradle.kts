@@ -40,7 +40,7 @@ dependencies {
     implementation("io.github.openfeign.form:feign-form-spring:3.8.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
-
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation("org.springframework.amqp:spring-rabbit-stream")
 
