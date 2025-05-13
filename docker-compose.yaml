@@ -37,6 +37,16 @@ services:
       retries: 5
     networks:
       - uppay-network
+  eurekaserver:
+    build:
+      context: ./eurekaserver
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    restart: on-failure
+    networks:
+      - uppay-network
+
   fee:
     build:
       context: ./fee

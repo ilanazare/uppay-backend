@@ -8,6 +8,7 @@ import com.nimbusds.jose.proc.SecurityContext
 import com.utils.KeyGeneratorUtility
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
@@ -49,6 +50,8 @@ class SecurityConfig(
                     .requestMatchers("/api/auth/login")
                     .permitAll()
                     .requestMatchers("/api/user/register")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/rsa/key")
                     .permitAll()
                     .anyRequest()
                     .authenticated()
