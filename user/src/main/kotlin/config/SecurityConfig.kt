@@ -30,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import java.security.KeyPair
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
+import java.util.UUID
 
 @Configuration
 @EnableWebSecurity
@@ -44,7 +45,9 @@ class SecurityConfig(
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
+            .securityContext { it.requireExplicitSave(false) }
             .csrf { it.disable() }
+            .cors { }
             .authorizeHttpRequests {
                 it
                     .requestMatchers("/api/auth/login")
@@ -53,9 +56,16 @@ class SecurityConfig(
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/rsa/key")
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/.well-known/jwks.json")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/user/{username}")
+                    .hasAuthority("ROLE_ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/user")
+                    .hasAuthority("ROLE_ADMIN")
                     .anyRequest()
                     .authenticated()
-            }.sessionManagement {
+            }.httpBasic { }
+            .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }.oauth2ResourceServer { oauth2 ->
                 oauth2
@@ -79,10 +89,10 @@ class SecurityConfig(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins
-        configuration.allowedMethods
-        configuration.allowCredentials
-        configuration.allowedHeaders
+        configuration.allowedOrigins = listOf("*") // or specify allowed domains
+        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        configuration.allowedHeaders = listOf("Authorization", "Content-Type")
+        configuration.allowCredentials = true
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
         return source
@@ -106,5 +116,17 @@ class SecurityConfig(
         val jwtConverter = JwtAuthenticationConverter()
         jwtConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter)
         return jwtConverter
+    }
+
+    @Bean
+    fun jwkSource(): JWKSource<SecurityContext> {
+        val rsaKey =
+            RSAKey
+                .Builder(keys.public as RSAPublicKey)
+                .privateKey(keys.private as RSAPrivateKey)
+                .keyID(UUID.randomUUID().toString())
+                .build()
+        val jwkSet = JWKSet(rsaKey)
+        return ImmutableJWKSet(jwkSet)
     }
 }

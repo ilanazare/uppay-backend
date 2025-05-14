@@ -30,7 +30,7 @@ class UserServiceTest {
         val encodedPassword = "encodedPassword"
         val requestUser = User(username = "testUser", password = rawPassword, authorities = "ADMIN")
         val savedUser = requestUser.copy(password = encodedPassword)
-        val expectedResponse = UserResponse(username = "testUser")
+        val expectedResponse = UserResponse(username = "testUser", password = encodedPassword, authorities = "ADMIN")
 
         every { passwordEncoder.encode(rawPassword) } returns encodedPassword
         every { userRepository.findUserByUsername("testUser") } returns null

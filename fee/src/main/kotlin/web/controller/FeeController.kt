@@ -1,4 +1,4 @@
-package com.web
+package com.web.controller
 
 import com.domain.entity.Fee
 import com.domain.enums.CreditCardFlagEnum
