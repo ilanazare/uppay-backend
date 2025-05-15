@@ -1,0 +1,40 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: customer-service
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: uppay
+    password: uppay@0132
+  datasource:
+    #    url: jdbc:mysql://mysql-service:3306/uppay
+    url: jdbc:mysql://localhost:3306/uppay
+    username: uppay
+    password: uppay@0132
+  logging:
+    level:
+      org.springframework.core.env: TRACE
+      org.springframework.security: TRACE
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+  circuitbreaker:
+    enabled: true

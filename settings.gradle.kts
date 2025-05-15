@@ -5,3 +5,4 @@ include("fee")
 
 include("migration")
 include("eurekaserver")
+include("customer")
