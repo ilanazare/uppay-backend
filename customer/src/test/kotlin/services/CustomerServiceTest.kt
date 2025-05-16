@@ -56,7 +56,7 @@ class CustomerServiceTest {
         every { customerRepository.save(any()) } returns request.toCustomer()
 
         // When
-        customerService.updateFee(request)
+        customerService.updateCustomer(request)
 
         // Then
         verify(exactly = 1) { customerRepository.save(any()) }
@@ -83,7 +83,7 @@ class CustomerServiceTest {
         every { customerRepository.findCustomerByCustomer("customer1") } returns customer
 
         // When
-        val result = customerService.findCardFeeByNumberOfInstallmentsAndFlag("customer1")
+        val result = customerService.findCustomerByCustomer("customer1")
 
         // Then
         assertEquals(expectedResponse, result)
@@ -96,7 +96,7 @@ class CustomerServiceTest {
 
         // When & Then
         assertThrows(CustomerNotFoundException::class.java) {
-            customerService.findCardFeeByNumberOfInstallmentsAndFlag("customer1")
+            customerService.findCustomerByCustomer("customer1")
         }
     }
 }

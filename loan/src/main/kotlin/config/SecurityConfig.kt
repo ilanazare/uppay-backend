@@ -24,11 +24,9 @@ class SecurityConfig {
             .cors { }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers(HttpMethod.GET, "/api/loan")
+                    .requestMatchers(HttpMethod.GET, "/api/loan/{customer}")
                     .hasAuthority("ROLE_ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/api/laon")
-                    .hasAuthority("ROLE_ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/api/laon")
+                    .requestMatchers(HttpMethod.POST, "/api/laon/{tableNumber}")
                     .hasAuthority("ROLE_ADMIN")
                     .anyRequest()
                     .authenticated()
