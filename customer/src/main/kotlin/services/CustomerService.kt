@@ -23,7 +23,7 @@ class CustomerService(
         }
     }
 
-    fun updateFee(request: CustomerRequest) {
+    fun updateCustomer(request: CustomerRequest) {
         val customer = customerRepository.findCustomerByCustomer(request.customer)?.customer
         customerRepository
             .save(request.toCustomer())
@@ -31,7 +31,7 @@ class CustomerService(
             ?: throw CustomerNotFoundException("Customer not found in the database")
     }
 
-    fun findCardFeeByNumberOfInstallmentsAndFlag(customer: String): CustomerResponse =
+    fun findCustomerByCustomer(customer: String): CustomerResponse =
         customerRepository
             .findCustomerByCustomer(customer)
             ?.toCustomerResponse() ?: throw CustomerNotFoundException("Customer not found in the database")

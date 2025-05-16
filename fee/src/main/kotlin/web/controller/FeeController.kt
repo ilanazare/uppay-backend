@@ -47,7 +47,7 @@ class FeeController(
         }
 
     @GetMapping
-    fun getFee(
+    fun findCardFeeByNumberOfInstallmentsAndFlag(
         @RequestParam numberTable: TableEnum,
         @RequestParam numberOfInstallments: Int,
         @RequestParam flag: CreditCardFlagEnum,

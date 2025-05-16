@@ -32,22 +32,22 @@ class CustomerController(
         }
 
     @PutMapping
-    fun updateFee(
+    fun updateCustomer(
         @RequestBody request: CustomerRequest,
     ): ResponseEntity<String> =
         try {
-            customerService.updateFee(request)
+            customerService.updateCustomer(request)
             ResponseEntity.ok("Customer fee updated successfully")
         } catch (e: CustomerNotFoundException) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }
 
     @GetMapping("/{customer}")
-    fun findCardFeeByNumberOfInstallmentsAndFlag(
+    fun findCustomerByCustomer(
         @PathVariable customer: String,
     ): ResponseEntity<CustomerResponse> =
         try {
-            val response = customerService.findCardFeeByNumberOfInstallmentsAndFlag(customer)
+            val response = customerService.findCustomerByCustomer(customer)
             ResponseEntity.ok(response)
         } catch (e: CustomerNotFoundException) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
