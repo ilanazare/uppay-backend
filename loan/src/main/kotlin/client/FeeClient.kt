@@ -7,6 +7,7 @@ import org.example.web.response.FeeResponse
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestParam
 
 @FeignClient(
@@ -19,5 +20,6 @@ interface FeeClient {
         @RequestParam numberTable: TableEnum,
         @RequestParam numberOfInstallments: Int,
         @RequestParam flag: CreditCardFlagEnum,
+        @RequestHeader("Authorization") token: String,
     ): ResponseEntity<FeeResponse>
 }
