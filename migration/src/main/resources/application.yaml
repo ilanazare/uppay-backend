@@ -2,7 +2,7 @@ server:
   port: 5000
 spring:
   datasource:
-    url: jdbc:mysql://mysql-service:3306/uppay
+    url: jdbc:mysql://localhost:3306/uppay
     username: uppay
     password: uppay@0132
   logging:

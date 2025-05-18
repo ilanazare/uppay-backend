@@ -14,7 +14,7 @@ data class Loan(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long,
-    @Column(name = "customer", unique = true)
+    @Column(name = "customer")
     val customer: String,
     val purchaseValue: Double,
     val numberOfInstallments: Int,

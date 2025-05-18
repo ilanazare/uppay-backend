@@ -23,11 +23,6 @@ class LoanService(
         request: LoanRequest,
     ) {
         val response = customerClient.findCustomerByCustomer(request.customer)
-        if (!response.statusCode.is2xxSuccessful || response.body == null) {
-            throw CustomerNotFoundException("Customer, ${request.customer}, not found in database")
-        }
-
-        val customer = response.body!!.customer
         val amountReleasedByMachine =
             calculatesAmountReleasedByMachine(tableNumber, request.purchaseValue, request.numberOfInstallments, request.flag)
         val amountRetainedByMachine =
@@ -49,7 +44,8 @@ class LoanService(
                     amountReleasedForClient = amountReleasedForClient,
                     purchaseDate = LocalDateTime.now(),
                 ),
-            ).takeIf { request.customer == customer }
+            ).takeIf { request.customer == response.body?.customer }
+            ?: throw CustomerNotFoundException("Customer, ${request.customer}, not found in database")
     }
 
     fun findListAmountByCustomer(customer: String): List<LoanResponse> =

@@ -19,24 +19,24 @@ services:
       - my-db:/var/lib/mysql
     networks:
       - uppay-network
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=uppay
-      - RABBITMQ_DEFAULT_PASS=uppay@0132
-    volumes:
-      - rabbitmq-data:/var/lib/rabbitmq
-    healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-    networks:
-      - uppay-network
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    container_name: rabbitmq
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=uppay
+#      - RABBITMQ_DEFAULT_PASS=uppay@0132
+#    volumes:
+#      - rabbitmq-data:/var/lib/rabbitmq
+#    healthcheck:
+#      test: ["CMD", "rabbitmqctl", "status"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5
+#    networks:
+#      - uppay-network
   eurekaserver:
     build:
       context: ./eurekaserver
@@ -47,49 +47,49 @@ services:
     networks:
       - uppay-network
 
-  fee:
-    build:
-      context: ./fee
-      dockerfile: Dockerfile
-    depends_on:
-      datasource:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-    ports:
-      - "8081:8081"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://datasource:3306/uppay
-      SPRING_DATASOURCE_USERNAME: uppay
-      SPRING_DATASOURCE_PASSWORD: uppay@0132
-      SPRING_RABBITMQ_HOST: uppay
-      SPRING_RABBITMQ_PORT: 5672
-    restart: on-failure
-    networks:
-      - uppay-network
-  user:
-    build:
-      context: ./user
-      dockerfile: Dockerfile
-    depends_on:
-      datasource:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://datasource:3306/uppay
-      SPRING_DATASOURCE_USERNAME: uppay
-      SPRING_DATASOURCE_PASSWORD: uppay@0132
-      SPRING_RABBITMQ_HOST: uppay
-      SPRING_RABBITMQ_PORT: 5672
-    restart: on-failure
-    networks:
-      - uppay-network
+#  fee:
+#    build:
+#      context: ./fee
+#      dockerfile: Dockerfile
+#    depends_on:
+#      datasource:
+#        condition: service_healthy
+#      rabbitmq:
+#        condition: service_healthy
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://datasource:3306/uppay
+#      SPRING_DATASOURCE_USERNAME: uppay
+#      SPRING_DATASOURCE_PASSWORD: uppay@0132
+#      SPRING_RABBITMQ_HOST: uppay
+#      SPRING_RABBITMQ_PORT: 5672
+#    restart: on-failure
+#    networks:
+#      - uppay-network
+#  user:
+#    build:
+#      context: ./user
+#      dockerfile: Dockerfile
+#    depends_on:
+#      datasource:
+#        condition: service_healthy
+#      rabbitmq:
+#        condition: service_healthy
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://datasource:3306/uppay
+#      SPRING_DATASOURCE_USERNAME: uppay
+#      SPRING_DATASOURCE_PASSWORD: uppay@0132
+#      SPRING_RABBITMQ_HOST: uppay
+#      SPRING_RABBITMQ_PORT: 5672
+#    restart: on-failure
+#    networks:
+#      - uppay-network
 volumes:
   my-db:
-  rabbitmq-data:
+#  rabbitmq-data:
   uppay-data:
 networks:
   uppay-network:

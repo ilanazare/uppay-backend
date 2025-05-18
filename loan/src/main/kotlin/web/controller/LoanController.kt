@@ -28,7 +28,7 @@ class LoanController(
             loanService.saveLoan(tableNumber, request)
             ResponseEntity.status(HttpStatus.CREATED).build()
         } catch (e: Exception) {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.message)
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }
 
     @GetMapping("/{customer}")
