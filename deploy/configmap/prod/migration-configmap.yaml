@@ -1,25 +1,24 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user-service-config
+  name: migration-server-config
   namespace: uppay
   labels:
-    app: user-service
+    app: migration-server
 data:
   application.yaml: |
     server:
-      port: 8080
+      port: 5000
     spring:
       application:
-        name: user-service
+        name: migration-server
       datasource:
-        url: jdbc:mysql://mysql-service:3306/uppay
+        url: jdbc:mysql://migration-db:3306/uppay
         username: uppay
         password: uppay@0132
       logging:
         level:
           org.springframework.core.env: TRACE
-          org.springframework.security: TRACE
       jpa:
         hibernate:
           ddl-auto: update
@@ -28,9 +27,3 @@ data:
         properties:
           hibernate:
             dialect: org.hibernate.dialect.MySQL8Dialect
-    eureka:
-      client:
-        service-url:
-          defaultZone: http://eureka-service:8761/eureka/
-      instance:
-        prefer-ip-address: true

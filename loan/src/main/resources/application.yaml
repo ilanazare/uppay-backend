@@ -3,11 +3,6 @@ server:
 spring:
   application:
     name: loan-service
-  rabbitmq:
-    host: rabbitmq
-    port: 5672
-    username: uppay
-    password: uppay@0132
   datasource:
     #    url: jdbc:mysql://mysql-service:3306/uppay
     url: jdbc:mysql://localhost:3306/uppay

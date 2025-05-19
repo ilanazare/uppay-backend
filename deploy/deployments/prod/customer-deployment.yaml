@@ -1,32 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
+  name: customer-service
   namespace: uppay
   labels:
-    app: user-service
+    app: customer-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: customer-service
   template:
     metadata:
       labels:
-        app: user-service
+        app: customer-service
     spec:
       containers:
-        - name: user-service
-          image: your-ecr-repository/user-service:latest
+        - name: customer-service
+          image: your-ecr-repo/customer-service:latest  # Replace with your actual ECR image
           ports:
-            - containerPort: 8080
+            - containerPort: 8083
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
           volumeMounts:
             - name: config-volume
-              mountPath: "/app/config"
+              mountPath: /config
       volumes:
         - name: config-volume
           configMap:
-            name: user-service-config
+            name: customer-service-config
+      restartPolicy: Always

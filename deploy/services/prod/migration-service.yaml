@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: migration-server
+  namespace: uppay
+  labels:
+    app: migration-server
+spec:
+  type: LoadBalancer  # This will create an AWS ELB
+  ports:
+    - port: 80
+      targetPort: 5000
+      protocol: TCP
+      name: http
+  selector:
+    app: migration-server

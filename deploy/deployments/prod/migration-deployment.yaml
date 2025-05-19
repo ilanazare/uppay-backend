@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
+  name: migration-server
   namespace: uppay
   labels:
-    app: user-service
+    app: migration-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: migration-server
   template:
     metadata:
       labels:
-        app: user-service
+        app: migration-server
     spec:
       containers:
-        - name: user-service
-          image: your-ecr-repository/user-service:latest
+        - name: migration-server
+          image: your-ecr-repo/migration-server:latest  # Replace with your actual image
           ports:
-            - containerPort: 8080
+            - containerPort: 5000
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
           volumeMounts:
             - name: config-volume
-              mountPath: "/app/config"
+              mountPath: /app/config/
       volumes:
         - name: config-volume
           configMap:
-            name: user-service-config
+            name: migration-server-config

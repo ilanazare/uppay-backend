@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fee-service
+  namespace: uppay
+  labels:
+    app: fee-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fee-service
+  template:
+    metadata:
+      labels:
+        app: fee-service
+    spec:
+      containers:
+        - name: fee-service
+          image: your-ecr-repo/fee-service:latest  # Replace with your actual image
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: fee-service-config
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+      restartPolicy: Always

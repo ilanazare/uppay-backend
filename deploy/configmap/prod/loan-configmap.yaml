@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user-service-config
+  name: loan-app-config
   namespace: uppay
   labels:
-    app: user-service
+    app: loan-service
 data:
   application.yaml: |
     server:
-      port: 8080
+      port: 8085
     spring:
       application:
-        name: user-service
+        name: loan-service
       datasource:
         url: jdbc:mysql://mysql-service:3306/uppay
         username: uppay
@@ -34,3 +34,10 @@ data:
           defaultZone: http://eureka-service:8761/eureka/
       instance:
         prefer-ip-address: true
+    feign:
+      client:
+        config:
+          default:
+            loggerLevel: full
+      circuitbreaker:
+        enabled: true

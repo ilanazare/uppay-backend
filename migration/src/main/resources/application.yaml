@@ -1,6 +1,8 @@
 server:
   port: 5000
 spring:
+  application:
+    name: migration-server
   datasource:
     url: jdbc:mysql://localhost:3306/uppay
     username: uppay
