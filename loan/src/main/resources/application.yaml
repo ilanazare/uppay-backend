@@ -4,10 +4,9 @@ spring:
   application:
     name: loan-service
   datasource:
-    #    url: jdbc:mysql://mysql-service:3306/uppay
-    url: jdbc:mysql://localhost:3306/uppay
+    url: jdbc:mysql://database-uppay.cn8agw0os9qp.sa-east-1.rds.amazonaws.com:3306/uppay?useSSL=false&serverTimezone=UTC
     username: uppay
-    password: uppay@0132
+    password: uppay0132
   logging:
     level:
       org.springframework.core.env: TRACE
@@ -23,7 +22,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://a8e4df1e368a946109b83d1cbb68198c-856949092.sa-east-1.elb.amazonaws.com/eureka/
   instance:
     prefer-ip-address: true
 feign:
