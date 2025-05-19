@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: loan-service
-          image: your-ecr-repo/loan-service:latest  # Replace with your actual ECR image
+          image: 039074742130.dkr.ecr.sa-east-1.amazonaws.com/loan:latest  # Replace with your actual ECR image
           ports:
             - containerPort: 8085
           env:
