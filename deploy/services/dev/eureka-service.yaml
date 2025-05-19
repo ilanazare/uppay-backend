@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-service
+  namespace: uppay
+  labels:
+    app: eureka-server
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8761
+      targetPort: 8761
+      protocol: TCP
+      name: eureka
+  selector:
+    app: eureka-server
