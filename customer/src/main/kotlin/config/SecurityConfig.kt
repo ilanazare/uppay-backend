@@ -46,8 +46,9 @@ class SecurityConfig {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf("*") // or specify allowed domains
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
-        configuration.allowedHeaders = listOf("Authorization", "Content-Type")
+        configuration.allowedHeaders = listOf("Authorization", "Content-Type", "X-Requested-With", "Accept")
         configuration.allowCredentials = true
+        configuration.exposedHeaders = listOf("Authorization")
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
         return source
@@ -65,7 +66,7 @@ class SecurityConfig {
 
     @Bean
     fun jwtDecoder(): JwtDecoder {
-        val jwkSetUri = "http://localhost:8080/.well-known/jwks.json"
+        val jwkSetUri = "http://user-service:8080/.well-known/jwks.json"
         println("Trying to connect to JWKS endpoint: $jwkSetUri")
         return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build()
     }

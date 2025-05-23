@@ -4,7 +4,7 @@ spring:
   application:
     name: migration-server
   datasource:
-    url: jdbc:mysql://database-uppay.cn8agw0os9qp.sa-east-1.rds.amazonaws.com:3306/uppay?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://db-uppay.cn8agw0os9qp.sa-east-1.rds.amazonaws.com:3306/uppay?useSSL=false&serverTimezone=UTC
     username: uppay
     password: uppay0132
   logging:

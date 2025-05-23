@@ -5,10 +5,16 @@ metadata:
   namespace: uppay
   labels:
     app: customer-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
 spec:
   type: LoadBalancer  # This will create an AWS ELB
   ports:
-    - port: 80
+    - port: 8083
       targetPort: 8083
       protocol: TCP
       name: http

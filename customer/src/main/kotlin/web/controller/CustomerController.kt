@@ -37,7 +37,7 @@ class CustomerController(
     ): ResponseEntity<String> =
         try {
             customerService.updateCustomer(request)
-            ResponseEntity.ok("Customer fee updated successfully")
+            ResponseEntity.ok("Customer updated successfully")
         } catch (e: CustomerNotFoundException) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }

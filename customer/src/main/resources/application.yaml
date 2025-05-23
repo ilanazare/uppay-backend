@@ -4,7 +4,7 @@ spring:
   application:
     name: customer-service
   datasource:
-    url: jdbc:mysql://database-uppay.cn8agw0os9qp.sa-east-1.rds.amazonaws.com:3306/uppay?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://db-uppay.cn8agw0os9qp.sa-east-1.rds.amazonaws.com:3306/uppay?useSSL=false&serverTimezone=UTC
     username: uppay
     password: uppay0132
   logging:
@@ -22,7 +22,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://a8e4df1e368a946109b83d1cbb68198c-856949092.sa-east-1.elb.amazonaws.com/eureka/
+      defaultZone: http://eureka-server:8761/eureka/
   instance:
     prefer-ip-address: true
 feign:
