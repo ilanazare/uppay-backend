@@ -5,14 +5,16 @@ metadata:
   namespace: uppay
   labels:
     app: eureka-server
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: external
-    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
-    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
-    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+#    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+#    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+#    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
+#    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+#    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "8761"
+#    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
 spec:
-  type: LoadBalancer  # AWS will create an ELB for this service
+  type: LoadBalancer
   ports:
     - port: 8761
       targetPort: 8761
