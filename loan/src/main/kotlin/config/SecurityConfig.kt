@@ -64,7 +64,7 @@ class SecurityConfig {
 
     @Bean
     fun jwtDecoder(): JwtDecoder {
-        val jwkSetUri = "http://user-service:8080/.well-known/jwks.json"
+        val jwkSetUri = "http://localhost:8080/.well-known/jwks.json"
         println("Trying to connect to JWKS endpoint: $jwkSetUri")
         return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build()
     }

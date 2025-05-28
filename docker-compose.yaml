@@ -7,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: 'uppay'
       MYSQL_USER: 'uppay'
       MYSQL_DATABASE: 'uppay'
-      MYSQL_PASSWORD: 'uppay@0132'
+      MYSQL_PASSWORD: 'uppay0132'
     ports:
       - '3306:3306'
     healthcheck:
