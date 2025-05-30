@@ -41,7 +41,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
-
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation("org.springframework.amqp:spring-rabbit-stream")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
@@ -55,9 +54,9 @@ dependencies {
     testImplementation("io.mockk:mockk:1.14.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.security:spring-security-test")
-
     testImplementation("org.springframework.amqp:spring-rabbit-test")
-
+    testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:3.0.1")
+    testImplementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

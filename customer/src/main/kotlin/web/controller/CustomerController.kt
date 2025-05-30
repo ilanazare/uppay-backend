@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@Suppress("UNCHECKED_CAST")
 @RestController
 @RequestMapping("/api/customer")
 class CustomerController(
@@ -50,6 +51,6 @@ class CustomerController(
             val response = customerService.findCustomerByCustomer(customer)
             ResponseEntity.ok(response)
         } catch (e: CustomerNotFoundException) {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-        }
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
+        } as ResponseEntity<CustomerResponse>
 }
