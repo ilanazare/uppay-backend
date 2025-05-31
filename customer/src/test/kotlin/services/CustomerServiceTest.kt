@@ -21,82 +21,85 @@ class CustomerServiceTest {
 
     @Test
     fun `saveCustomer should save new customer when customer does not exist`() {
-        // Given
-        val request = CustomerRequest("customer1", "email@test.com")
-        every { customerRepository.findCustomerByCustomer("customer1") } returns null
-        every { customerRepository.save(any()) } returns request.toCustomer()
+        val request = CustomerRequest("nonExistingCustomer", "email@test.com")
+        every { customerRepository.findCustomerByCustomer(request.customer) } returns null
+        every { customerRepository.save(request.toCustomer()) } returns request.toCustomer()
 
-        // When
         customerService.saveCustomer(request)
 
-        // Then
-        verify(exactly = 1) { customerRepository.save(any()) }
+        verify(exactly = 1) { customerRepository.findCustomerByCustomer(request.customer) }
+        verify(exactly = 1) { customerRepository.save(request.toCustomer()) }
     }
 
     @Test
     fun `saveCustomer should throw CustomerDoesExistException when customer already exists`() {
-        // Given
-        val request = CustomerRequest("customer1", "email@test.com")
+        val request = CustomerRequest("existingCustomer", "email@email.com")
         val existingCustomer = request.toCustomer()
-        every { customerRepository.findCustomerByCustomer("customer1") } returns existingCustomer
+        every { customerRepository.findCustomerByCustomer(existingCustomer.customer) } returns existingCustomer
 
-        // When & Then
-        assertThrows(CustomerDoesExistException::class.java) {
-            customerService.saveCustomer(request)
-        }
-        verify(exactly = 0) { customerRepository.save(any()) }
+        val response =
+            assertThrows(CustomerDoesExistException::class.java) {
+                customerService.saveCustomer(request)
+            }
+
+        verify(exactly = 1) { customerRepository.findCustomerByCustomer(existingCustomer.customer) }
+        verify(exactly = 0) { customerRepository.save(request.toCustomer()) }
+        assertEquals("Customer does exist in the database", response.message)
     }
 
     @Test
     fun `updateFee should update customer when customer exists`() {
-        // Given
-        val request = CustomerRequest("customer1", "newemail@test.com")
-        val existingCustomer = Customer("customer1", "oldemail@test.com")
-        every { customerRepository.findCustomerByCustomer("customer1") } returns existingCustomer
-        every { customerRepository.save(any()) } returns request.toCustomer()
+        val request = CustomerRequest("existingCustomer", "newEmail@email.com")
+        val existingCustomer = Customer("existingCustomer", "oldEmail@email.com")
+        every { customerRepository.findCustomerByCustomer(request.customer) } returns existingCustomer
+        every { customerRepository.save(request.toCustomer()) } returns request.toCustomer()
 
-        // When
         customerService.updateCustomer(request)
 
-        // Then
-        verify(exactly = 1) { customerRepository.save(any()) }
-    }
-//
-//    @Test
-//    fun `updateFee should throw CustomerNotFoundException when customer does not exist`() {
-//        // Given
-//        val request = CustomerRequest("customer1", "email@test.com")
-//        every { customerRepository.findCustomerByCustomer("customer1") } returns null
-//
-//        // When & Then
-//        assertThrows(CustomerNotFoundException::class.java) {
-//            customerService.updateFee(request)
-//        }
-//        verify(exactly = 0) { customerRepository.save(any()) }
-//    }
-
-    @Test
-    fun `findCardFeeByNumberOfInstallmentsAndFlag should return customer response when customer exists`() {
-        // Given
-        val customer = Customer("customer1", "email@test.com")
-        val expectedResponse = customer.toCustomerResponse()
-        every { customerRepository.findCustomerByCustomer("customer1") } returns customer
-
-        // When
-        val result = customerService.findCustomerByCustomer("customer1")
-
-        // Then
-        assertEquals(expectedResponse, result)
+        verify(exactly = 1) { customerRepository.findCustomerByCustomer(request.customer) }
+        verify(exactly = 1) { customerRepository.save(request.toCustomer()) }
     }
 
     @Test
-    fun `findCardFeeByNumberOfInstallmentsAndFlag should throw CustomerNotFoundException when customer does not exist`() {
-        // Given
-        every { customerRepository.findCustomerByCustomer("customer1") } returns null
+    fun `updateFee should throw CustomerNotFoundException when customer does not exist`() {
+        val request = CustomerRequest("nonExistingCustomer", "newEmail@email.com")
+        every { customerRepository.findCustomerByCustomer(request.customer) } returns null
 
-        // When & Then
-        assertThrows(CustomerNotFoundException::class.java) {
-            customerService.findCustomerByCustomer("customer1")
-        }
+        val response =
+            assertThrows(CustomerNotFoundException::class.java) {
+                customerService.findCustomerByCustomer(request.customer)
+            }
+
+        verify(exactly = 1) { customerRepository.findCustomerByCustomer(request.customer) }
+        verify(exactly = 0) { customerRepository.save(any()) }
+        assertEquals("Customer not found in the database", response.message)
+    }
+
+    @Test
+    fun `findCustomerByCustomer should return customer response when customer exists`() {
+        val customer = "existingCustomer"
+        val expectedResponse = Customer(customer, "existingEmail@email.com")
+
+        every { customerRepository.findCustomerByCustomer(customer) } returns expectedResponse
+
+        val response = customerService.findCustomerByCustomer(customer)
+
+        verify(exactly = 1) { customerRepository.findCustomerByCustomer(customer) }
+        assertEquals(expectedResponse.toCustomerResponse(), response)
+        assertEquals(expectedResponse.toCustomerResponse().customer, response.customer)
+        assertEquals(expectedResponse.toCustomerResponse().email, response.email)
+    }
+
+    @Test
+    fun `findCustomerByCustomer should throw CustomerNotFoundException when customer does not exist`() {
+        val customer = "nonExistingCustomer"
+        every { customerRepository.findCustomerByCustomer(customer) } returns null
+
+        val response =
+            assertThrows(CustomerNotFoundException::class.java) {
+                customerService.findCustomerByCustomer(customer)
+            }
+        verify(exactly = 1) { customerRepository.findCustomerByCustomer(customer) }
+        assertEquals("Customer not found in the database", response.message)
     }
 }
